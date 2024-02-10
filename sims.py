@@ -2,21 +2,21 @@ import random
 
 
 class Human:
-    def __init__(self, name="Human", job=None, home=None, car=None):
+    def __init__(self, name="Human", job=None, car=None, home=None):
         self.name = name
         self.job = job
-        self.home = home
         self.car = car
+        self.home = home
         self.money = 100
         self.gladness = 50
         self.satiety = 50
-        self.thirst = 20
+        self.thirst = 10
 
     def get_home(self):
         self.home = House()
 
     def get_car(self):
-        self.car = Car(brands_of_car)
+        self.car = Auto(brands_of_car)
 
     def get_job(self):
         self.job = Job(job_list)
@@ -47,7 +47,6 @@ class Human:
             else:
                 self.to_repair()
                 return
-
         self.money += self.job.salary
         self.gladness -= self.job.gladness_less
         self.satiety -= 5
@@ -63,62 +62,79 @@ class Human:
                 self.to_repair()
                 return
         if manage == "fuel":
-            print("I bought Fuel")
+            print("I bought fuel!")
             self.money -= 100
             self.car.fuel = 100
-        elif manage == "food":
-            print("I bought Food")
+        elif manage == 'food':
+            print("Bought food!")
             self.money -= 50
             self.home.food += 50
-        elif manage == "water":
-            print("I bought Water")
+        elif manage == 'water':
+            print("Bought water!")
             self.money -= 5
-            self.home.food += 5
-        elif manage == "delicacets":
-            print("Im Happy")
+            self.home.water += 5
+        elif manage == "delicacies":
+            print("I'm happy!")
             self.gladness += 10
             self.money -= 15
             self.satiety += 2
 
     def chill(self):
-        pass
+        print("Relaxing and having a good time!")
+        self.gladness += 5
+        self.satiety -= 2
+        self.thirst -= 1
 
     def clean_home(self):
-        pass
+        print("Cleaning the house!")
+        self.home.mess -= 10
+        self.gladness += 2
 
     def to_repair(self):
-        pass
+        print("Repairing the car!")
+        self.car.strength += 10
+        self.gladness -= 5
+        self.satiety -= 2
 
     def days_indexes(self, day):
-        d = f"Today the {day} of {self.name}'s indexes "
+        d = f"Today the {day} of {self.name}'s indexes"
         print(f"{d:=^50}")
-        humen_i = f"{self.name}'s indexes"
-        print(f"{humen_i:=^50}")
-
+        human_i = f"{self.name}'s indexes"
+        print(f"{human_i:=^50}")
+        print(f"{human_i:=^50}")
+        print(f"Money: {self.money}")
+        print(f"Gladness: {self.gladness}")
+        print(f"Satiety: {self.satiety}")
+        print(f"Thirst: {self.thirst}")
         print(f"{'Home indexes':=^50}")
+        if self.home is not None:
+            print(f"{'Home indexes':=^50}")
+            print(f"Mess: {self.home.mess}")
+            print(f"Food: {self.home.food}")
+            print(f"Water: {self.home.water}")
 
-        car_i = f"{self.car.brand} car indexes"
-        print(f"{car_i:=^50}")
-        print(f"Fuel: {self.car.fuel}")
-        print(f"Strengh: {self.car.strength}")
+        if self.car is not None:
+            car_i = f"{self.car.brand} car indexes"
+            print(f"{car_i:=^50}")
+            print(f"Fuel: {self.car.fuel}")
+            print(f"Strength: {self.car.strength}")
 
     def is_alive(self):
         if self.gladness < 0:
-            print("Depression... ")
+            print("Depression...")
             return False
         if self.satiety < 0 or self.thirst < 0:
             print("Dead...")
             return False
         if self.money < -100:
-            print(
-                "gbrtjghnrgjonitejokjoebjhefbjgbi4tjnypegjotji0n thjnipfhhibetrjipthf pbokjn-hfngibetjinjjbgeoo-ggonkjtrijtrojrnjte;jobjfhp[ibnetjonirkbjriobnjrtoinjtponijrtponkrt[njro]gjngfipbjmrg")
+            print("Bankrupt...")
             return False
 
     def live(self, day):
         if self.is_alive() == False:
             return False
         if self.home is None:
-            print("tgmrojgrojjgorjortjgorjgrttgyrthyhtdjryjtydj")
+            print("Settle in the house")
             self.get_home()
         if self.car is None:
             self.get_car()
@@ -129,32 +145,32 @@ class Human:
         self.days_indexes(day)
         dice = random.randint(1, 4)
         if self.satiety < 10:
-            print("TIme to eat")
+            print('Time to eat!')
             self.eat()
         elif self.gladness < 5:
-            print("Time to chill")
+            print("Time chill")
             self.chill()
         elif self.money < 5:
-            print("Time to work")
+            print("Time working!")
             self.work()
         elif self.car.strength < 10:
-            print("Time to Repeir")
+            print("Time to repair")
             self.to_repair()
         elif dice == 1:
-            print("Chill")
+            print("Let's chill")
             self.chill()
         elif dice == 2:
-            print("Work")
+            print("Let's working")
             self.work()
         elif dice == 3:
-            print("Clean_home")
+            print("Cleaning home")
             self.clean_home()
         elif dice == 4:
-            manage = "delicacets"
+            manage = "delicacies"
             self.shopping(manage)
 
 
-class Car:
+class Auto:
     def __init__(self, brand_list):
         self.brand = random.choice(list(brand_list))
         self.fuel = brand_list[self.brand]["fuel"]
@@ -167,7 +183,7 @@ class Car:
             self.strength -= 1
             return True
         else:
-            print("The Car cannot move!")
+            print("The car cannot move!")
             return False
 
 
@@ -185,14 +201,14 @@ class Job:
         self.gladness_less = job_list[self.job]['gladness_less']
 
 
-job_list = {"Python Developer": {"salary": 50, "gladness_less": 12},
-            "C++ Developer": {"salary": 40, "gladness_less": 10},
-            "PHP Developer": {"salary": 10, "gladness_less": 2}}
+job_list = {"Python developer": {"salary": 50, "gladness_less": 12},
+            "C++ developer": {'salary': 70, 'gladness_less': 6},
+            "Php developer": {'salary': 30, 'gladness_less': 4}}
 
-brands_of_car = {"Toyota": {"fuel": 100, "strength": 120, "consumption": 14},
-                 "Toyota_Prius": {"fuel": 80, "strength": 1200, "consumption": 12},
-                 "No_Toyota": {"fuel": -10, "strength": 2, "consumption": 1},
-                 "Audi": {"fuel": 100, "strength": 2000, "consumption": 14}}
+brands_of_car = {"Mercedes": {"fuel": 100, "strength": 120, "consumption": 14},
+                 "Daewoo Lanos": {"fuel": 101, "strength": 300, "consumption": 20},
+                 "Matiz": {"fuel": 120, "strength": 500, "consumption": 36},
+                 "BMW M3 GTR": {"fuel": 100, "strength": 400, "consumption": 30}}
 
 nick = Human("Nick")
 for day in range(1, 8):
