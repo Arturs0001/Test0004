@@ -88,13 +88,14 @@ class Human:
     def clean_home(self):
         print("Cleaning the house!")
         self.home.mess -= 10
-        self.gladness += 2
+        self.gladness -= 1
 
     def to_repair(self):
         print("Repairing the car!")
         self.car.strength += 10
         self.gladness -= 5
         self.satiety -= 2
+        self.money -= 50
 
     def days_indexes(self, day):
         d = f"Today the {day} of {self.name}'s indexes"
